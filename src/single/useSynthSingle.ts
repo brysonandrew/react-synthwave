@@ -1,7 +1,6 @@
 import { useMemo, useRef } from "react";
 import type { TStopOptions, TSynthOptions } from "./types";
 import { resolveMidi } from "./resolvers";
-import { useContext } from "@state/Context";
 import { isWritableOscillatorType } from "./guards";
 
 type TRef = {
@@ -16,9 +15,9 @@ type TCreateRef = {
 };
 
 export const useSynthSingle = (
+  context: AudioContext,
   options: TSynthOptions = {},
 ) => {
-  const { context, master } = useContext();
   const { type, midi, frequency, detune, gain } = options;
 
   const optionsRef = useRef<TSynthOptions>(options);
@@ -157,7 +156,13 @@ export const useSynthSingle = (
 
     oscillatorNode.connect(gainNode);
 
-    gainNode.connect(master);
+    if (options.master) {
+      gainNode.connect(options.master);
+
+    } else {
+      gainNode.connect(context.destination);
+
+    }
   };
 
   return { play: handlePlay, stop: handleStop };
