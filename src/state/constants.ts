@@ -8,9 +8,9 @@ export const STATE: TState = {
   isPlaying: false,
   options: {
     type: "sawtooth",
-    midi: 60,
+    midi: 28,
     detune: 0,
-    gain: 1,
+    gain: 0.4,
     attack: 0.2,
     decay: 0.2,
   },
