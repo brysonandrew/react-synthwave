@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@components/*": ["src/components/*"],
+      "@logic/*": ["src/logic/*"],
+      "@state/*": ["src/state/*"],
+      "@tailwind/*": ["tailwind.*"]
+    }
+  }
+}

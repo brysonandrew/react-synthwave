@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "types": ["vite/client", "node"],
+    "typeRoots": ["node_modules/@types"],
+    "composite": true,
+    "experimentalDecorators": true,
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "es2020",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "allowJs": true
+  },
+  "include": [
+    "src/**/*.json",
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/**/*.tsx", "src/logic/visualize/useVisualize.ts",
+  ],
+  "files": [
+    "tailwind.config.js"
+  ],
+  "extends": "./tsconfig.paths.json"
+}
