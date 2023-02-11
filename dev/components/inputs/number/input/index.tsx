@@ -2,10 +2,10 @@ import type { FC } from "react";
 import { motion } from "framer-motion";
 import type { HTMLMotionProps } from "framer-motion";
 import styled from "@emotion/styled";
-import type { TChildren } from "src/t/index";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { INPUT_CLASS } from "@constants/index";
+import type { TChildren } from "dev/t";
 
 const Root = styled(motion.label)``;
 const Input = styled(motion.input)``;

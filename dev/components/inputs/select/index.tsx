@@ -3,7 +3,6 @@ import clsx from "clsx";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 import { ITEM_CLASS } from "@constants/index";
-import { GRADIENT } from "src/constants";
 import type {
   TSelectProps as _TSelectProps} from "./input";
 import {
@@ -46,8 +45,7 @@ export const Select = <T extends string>({
       <_Select<T>
         {...props}
         classValue={clsx(
-          "grow shadow-pink",
-          GRADIENT,
+          "grow",
         )}
       />
     </div>

@@ -4,7 +4,7 @@ import type {
   ReducerState,
   ReducerAction,
 } from "react";
-import type { TSynthOptions } from "@logic/synth/types";
+import type { TSynthOptions } from "@synth/single/types";
 
 export type TContext = TState & {
   context: AudioContext;
