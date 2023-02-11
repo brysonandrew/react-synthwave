@@ -5,6 +5,18 @@ export const reducer = (
   { type, value }: TReducerAction,
 ) => {
   switch (type) {
+    case "toggle-ready": {
+      return {
+        ...state,
+        isReady: value,
+      };
+    }
+    case "toggle-playing": {
+      return {
+        ...state,
+        isPlaying: value,
+      };
+    }
     case "update-options": {
       return {
         ...state,
@@ -12,12 +24,6 @@ export const reducer = (
           ...state.options,
           ...value,
         },
-      };
-    }
-    case "toggle-playing": {
-      return {
-        ...state,
-        isPlaying: value,
       };
     }
     default: {

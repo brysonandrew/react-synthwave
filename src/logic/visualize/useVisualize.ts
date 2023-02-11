@@ -1,9 +1,5 @@
-import {
-  MutableRefObject,
-  useCallback,
-  useRef,
-} from "react";
-import { useEffect } from "react";
+import type { MutableRefObject } from "react";
+import { useCallback, useRef, useEffect } from "react";
 
 type TInit = {
   bufferLength: number;
@@ -50,7 +46,8 @@ export const useVisualize = ({
     ...current,
   };
 
-  const init = () => {
+  const init = async () => {
+    await context.resume();
     const analyser = context.createAnalyser();
     analyser.fftSize = 2048;
     if (currentRef.current.init === null) {

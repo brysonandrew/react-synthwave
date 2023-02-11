@@ -56,11 +56,47 @@ export const Options: FC = () => {
         <Item className="py-1" />
         <Item>
           <NumberSlider
+            name="detune"
+            title="detune"
+            value={options.detune}
+            min="-2400"
+            max="2400"
+            step="10"
+            onChange={handleChange}
+          />
+        </Item>
+        <Item className="py-1" />
+        <Item>
+          <NumberSlider
             name="gain"
             title="gain"
             value={options.gain}
             min="0"
             max="2"
+            step="0.1"
+            onChange={handleChange}
+          />
+        </Item>
+        <Item className="py-1" />
+        <Item>
+          <NumberSlider
+            name="attack"
+            title="attack"
+            value={options.attack}
+            min="0"
+            max="10"
+            step="0.1"
+            onChange={handleChange}
+          />
+        </Item>
+        <Item className="py-1" />
+        <Item>
+          <NumberSlider
+            name="decay"
+            title="decay"
+            value={options.decay}
+            min="0"
+            max="10"
             step="0.1"
             onChange={handleChange}
           />

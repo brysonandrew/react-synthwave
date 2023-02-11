@@ -11,8 +11,14 @@ const Canvas = styled.canvas``;
 const Core = styled.div``;
 
 export default () => {
-  const { isPlaying, context, master, options, dispatch } =
-    useContext();
+  const {
+    isReady,
+    isPlaying,
+    context,
+    master,
+    options,
+    dispatch,
+  } = useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   useVisualize({
     isActive: isPlaying,
@@ -28,11 +34,14 @@ export default () => {
   }, []);
 
   const handleStop = useCallback(() => {
-    stop();
-    dispatch({ type: "toggle-playing", value: false });
+    stop({
+      onEnded: () =>
+        dispatch({ type: "toggle-playing", value: false }),
+    });
   }, []);
 
   usePlayKey({
+    isReady,
     play: handlePlay,
     stop: handleStop,
     isActive: true,

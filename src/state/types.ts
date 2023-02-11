@@ -14,15 +14,20 @@ export type TContext = TState & {
 
 export type TAction =
   | {
-      type: "update-options";
-      value: Partial<TSynthOptions>;
+      type: "toggle-ready";
+      value: boolean;
     }
   | {
       type: "toggle-playing";
       value: boolean;
+    }
+  | {
+      type: "update-options";
+      value: Partial<TSynthOptions>;
     };
 
 export type TState = {
+  isReady: boolean;
   isPlaying: boolean;
   options: TSynthOptions;
 };

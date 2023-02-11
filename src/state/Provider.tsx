@@ -32,6 +32,7 @@ export const Provider: FC<TProviderProps> = ({
         ...STATE,
         ...nextState,
         isPlaying: false,
+        isReady: false,
       });
 
       return nextState;

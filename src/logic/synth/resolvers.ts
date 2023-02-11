@@ -1,3 +1,5 @@
+import { TSynthOptions } from "./types";
+
 const HZ = 440;
 export const midiToHz = (note: number) =>
   Math.pow(2, (note - 69) / 12) * HZ;
@@ -19,3 +21,20 @@ export const resolveMidi = ({
   }
   return frequency;
 };
+
+// export type TResolveOptionsConfig = {
+//   prev: TSynthOptions;
+//   curr: TSynthOptions;
+// };
+// export const resolveOptions = ({
+//   prev,
+//   curr,
+// }: TResolveOptionsConfig) => {
+//   const next = {...prev}
+//   const entries = Object.entries(curr);
+//   for (const [key, value] of entries) {
+//     if (typeof value === )
+//     next[key] = value
+//   }
+//   return frequency;
+// };
