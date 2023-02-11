@@ -4,6 +4,7 @@ import type {
   ReducerState,
   ReducerAction,
 } from "react";
+import type { TSynthOptions } from "@logic/synth/types";
 
 export type TContext = TState & {
   context: AudioContext;
@@ -11,13 +12,19 @@ export type TContext = TState & {
   dispatch: TDispatch;
 };
 
-export type TAction = {
-  type: "action-name";
-  value: null;
-};
+export type TAction =
+  | {
+      type: "update-options";
+      value: Partial<TSynthOptions>;
+    }
+  | {
+      type: "toggle-playing";
+      value: boolean;
+    };
 
 export type TState = {
-  count: number;
+  isPlaying: boolean;
+  options: TSynthOptions;
 };
 
 export type TActionType = null;

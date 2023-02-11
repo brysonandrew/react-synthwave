@@ -4,37 +4,61 @@ import { resolveMidi } from "./resolvers";
 import { useContext } from "@state/Context";
 import { isWritableOscillatorType } from "./guards";
 
-export const useSynthSingle = (options: TSynthOptions = {}) => {
+type TRef = {
+  isPlaying: boolean;
+  oscillatorNode?: OscillatorNode;
+  gainNode?: GainNode;
+};
+
+type TCreateRef = {
+  createOscillatorNode: () => OscillatorNode;
+  createGainNode: () => GainNode;
+};
+
+export const useSynthSingle = (
+  options: TSynthOptions = {},
+) => {
   const { context, master } = useContext();
   const { type, midi, frequency, detune, gain } = options;
 
-  const optionsRef = useRef(options);
+  const optionsRef = useRef<TSynthOptions>(options);
   optionsRef.current = options;
 
-  const current = {};
-  const currentRef = useRef<any>({
+  const currentRef = useRef<TRef>({
     isPlaying: false,
-    oscillatorNode: null,
-    gainNode: null,
-    ...current,
   });
-  currentRef.current = current;
 
   const createOscillatorNode = useMemo(() => {
-    const handler = () =>
-      new OscillatorNode(context, {
+    const handler = () => {
+      return new OscillatorNode(context, {
         type,
         frequency: resolveMidi({ midi, frequency }),
         detune,
       });
+    };
+    currentRef.current.oscillatorNode = handler();
     return handler;
   }, [type, frequency, midi, detune]);
 
   const createGainNode = useMemo(() => {
-    const handler = () =>
-      new GainNode(context, { gain: 1 });
+    const handler = () => new GainNode(context, { gain });
+    currentRef.current.gainNode = handler();
     return handler;
   }, [gain]);
+
+  const current = {
+    createOscillatorNode,
+    createGainNode,
+  };
+
+  const createRef = useRef<TCreateRef>({
+    ...current,
+  });
+
+  createRef.current = {
+    ...createRef.current,
+    ...current,
+  };
 
   const handleStop = async (options: TStopOptions = {}) => {
     await context.resume();
@@ -42,6 +66,7 @@ export const useSynthSingle = (options: TSynthOptions = {}) => {
     if (!current.isPlaying) return;
     current.isPlaying = false;
     const { gainNode, oscillatorNode } = current;
+    if (!gainNode || !oscillatorNode) return;
 
     const {
       gain = 1,
@@ -61,7 +86,8 @@ export const useSynthSingle = (options: TSynthOptions = {}) => {
     oscillatorNode.stop(end);
 
     oscillatorNode.onended = () => {
-      current.oscillatorNode = createOscillatorNode();
+      current.oscillatorNode =
+        createRef.current.createOscillatorNode();
       gainNode.disconnect();
 
       if (onEnded) {
@@ -77,13 +103,8 @@ export const useSynthSingle = (options: TSynthOptions = {}) => {
     const { current } = currentRef;
     if (current.isPlaying) return;
     current.isPlaying = true;
-    if (!current.oscillatorNode) {
-      current.oscillatorNode = createOscillatorNode();
-    }
-    if (!current.gainNode) {
-      current.gainNode = createGainNode();
-    }
-    const { isPlaying, oscillatorNode, gainNode } = current;
+    const { oscillatorNode, gainNode } = current;
+    if (!gainNode || !oscillatorNode) return;
 
     const {
       type,
@@ -133,8 +154,6 @@ export const useSynthSingle = (options: TSynthOptions = {}) => {
     oscillatorNode.connect(gainNode);
 
     gainNode.connect(master);
-
-    // master.connect(context.destination);
   };
 
   return { play: handlePlay, stop: handleStop };

@@ -49,7 +49,7 @@ export const Input: FC<TProps> = memo(
           "relative flex items-center w-full bg-purple-005 shadow-purple-04-sm",
         )}
       >
-        <Label className="absolute top-1/2 left-1/2 text-xs text-gray-lightest uppercase tracking-widest ">
+        <Label className="absolute top-1/2 left-1/2 text-xs uppercase tracking-widest ">
           {name}
         </Label>
         <Slider

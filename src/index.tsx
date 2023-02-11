@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { Provider } from "@state/Provider";
 import App from "./app";
-import "./globals.css";
+import "@styles/globals.css";
 
 const root = document.getElementById("root");
 if (root)

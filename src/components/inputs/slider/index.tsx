@@ -43,7 +43,7 @@ export const Slider: FC<TSliderProps> = ({
     <div className="p-1" />
     <div
       className={clsx(
-        "flex relative shadow-purple h-1",
+        "flex relative shadow-purple",
         GRADIENT,
       )}
     >

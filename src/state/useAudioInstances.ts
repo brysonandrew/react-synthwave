@@ -1,11 +1,13 @@
-import { useMemo } from "react";
+import { useRef } from "react";
 
 export const useAudioInstances = () => {
-  const context = useMemo(() => new AudioContext(), []);
-  const master = useMemo(
-    () => new GainNode(context, { gain: 1 }),
-    [],
+  const context = useRef(new AudioContext());
+  const master = useRef(
+    new GainNode(context.current, { gain: 1 }),
   );
 
-  return { master, context };
+  return {
+    master: master.current,
+    context: context.current,
+  };
 };

@@ -2,12 +2,22 @@ import type { TState, TReducerAction } from "./types";
 
 export const reducer = (
   state: TState,
-  { type }: TReducerAction,
+  { type, value }: TReducerAction,
 ) => {
   switch (type) {
-    case "action-name": {
+    case "update-options": {
       return {
         ...state,
+        options: {
+          ...state.options,
+          ...value,
+        },
+      };
+    }
+    case "toggle-playing": {
+      return {
+        ...state,
+        isPlaying: value,
       };
     }
     default: {

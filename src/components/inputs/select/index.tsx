@@ -36,7 +36,7 @@ export const Select = <T extends string>({
     <div className="flex items-center justify-between">
       <div
         className={clsx(
-          "mt-1 whitespace-nowrap h-full",
+          "whitespace-nowrap h-full",
           classTitleValue,
         )}
       >
@@ -46,7 +46,7 @@ export const Select = <T extends string>({
       <_Select<T>
         {...props}
         classValue={clsx(
-          "grow text-white shadow-pink",
+          "grow shadow-pink",
           GRADIENT,
         )}
       />

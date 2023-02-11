@@ -6,6 +6,7 @@ import type {
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { Root, Input } from "./styles";
+import { INPUT_CLASS } from "@constants/index";
 
 export type TSliderProps = Omit<
   HTMLMotionProps<"input">,
@@ -29,8 +30,9 @@ export const Slider: FC<TSliderProps> = ({
 }) => (
   <Root
     className={clsx(
+      INPUT_CLASS,
       "relative h-full w-full z-0",
-      labelClassValue
+      labelClassValue,
     )}
     {...(labelProps || {})}
   >
@@ -39,7 +41,7 @@ export const Slider: FC<TSliderProps> = ({
       type="range"
       className={clsx(
         "absolute inset-0 disabled:brightness-50",
-        classValue
+        classValue,
       )}
       value={value ?? ""}
       onChange={onChange}

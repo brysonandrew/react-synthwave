@@ -8,7 +8,7 @@ type TProps = {
 };
 export const Label: FC<TProps> = ({ prefix, value }) => (
   <div className={clsx(config.theme)}>
-    <h4 className="text-sm text-white-darkest truncate">
+    <h4 className="text-sm truncate">
       {[prefix, value ?? null].filter(Boolean).join(" - ")}
     </h4>
   </div>

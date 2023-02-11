@@ -30,7 +30,7 @@ export const NumberSlider: FC<TNumberSliderProps> = ({
   ...props
 }) => (
   <div
-    className={clsx(ITEM_CLASS, classValue, [
+    className={clsx( ITEM_CLASS, classValue, [
       inactive && "opacity-50",
     ])}
   >
@@ -45,13 +45,13 @@ export const NumberSlider: FC<TNumberSliderProps> = ({
       </div>
       <div className="p-2" />
       <_Number
-        classValue="text-md shadow-pink"
+        classValue="text-md"
         {...props}
       />
       <div className="p-2" />
       <div
         className={clsx(
-          "flex relative shadow-purple h-1 grow",
+          "flex relative grow",
         )}
       >
         <Slider {...props} />

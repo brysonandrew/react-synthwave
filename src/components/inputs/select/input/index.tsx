@@ -6,7 +6,10 @@ import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { CaretDown } from "@components/icons/CaretDown";
 import { css } from "@emotion/react";
-import { INSET_BOX_INPUT_CLASS } from "@constants/index";
+import {
+  INPUT_CLASS,
+  INSET_BOX_INPUT_CLASS,
+} from "@constants/index";
 
 const parseOptions = <T extends string>(
   option: T | [T, string],
@@ -56,8 +59,9 @@ export const Select = <T extends string>({
 }: TSelectProps<T>) => (
   <Root
     className={clsx(
+      INPUT_CLASS,
       "relative w-full",
-      classValue ?? "bg-black-9",
+      classValue,
     )}
     title={title}
   >
@@ -87,7 +91,7 @@ export const Select = <T extends string>({
       <CaretDown />
     </Icon>
     {header && (
-      <div className="absolute right-1 top-0 text-purple-04 pointer-events-none">
+      <div className="absolute right-1 top-0 pointer-events-none">
         {header}
       </div>
     )}
