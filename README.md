@@ -1,2 +1,2 @@
-# react-synthwave
+# React Synthwave
 sunset night cruise palm desert
