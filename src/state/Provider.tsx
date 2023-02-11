@@ -7,7 +7,7 @@ import {
   STATE,
   _SYNTH_WAVE_STATE_STORAGE_KEY,
 } from "./constants";
-import { useAudioRefs } from "./useAudioRefs";
+import { useAudioInstances } from "./useAudioInstances";
 import { useLocalStorage } from "@logic/storage/useLocalStorage";
 
 type TProviderProps = {
@@ -16,7 +16,7 @@ type TProviderProps = {
 export const Provider: FC<TProviderProps> = ({
   children,
 }) => {
-  const { context, master } = useAudioRefs();
+  const { context, master } = useAudioInstances();
 
   const [savedState, setSavedState] =
     useLocalStorage<TState>(
