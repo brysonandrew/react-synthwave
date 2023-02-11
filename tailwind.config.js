@@ -6,6 +6,10 @@ module.exports = {
     join(__dirname, "./src/**/*.tsx"),
   ],
   theme: {
-    extend: {},
+    extend: {
+      width: {
+        core: "512px"
+      }
+    },
   },
 };

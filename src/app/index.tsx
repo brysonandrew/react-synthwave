@@ -1,37 +1,65 @@
 import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useVisualize } from "../logic/visualize/useVisualize";
 import { useSynthSingle } from "@logic/synth/useSynthSingle";
-import { usePlayKey } from "@logic/key/useTogglePlayKeyPress";
+import { usePlayKey } from "@logic/key/usePlayKey";
+import { Options } from "./Options";
 
 const Root = styled.div``;
 const Canvas = styled.canvas``;
 const Core = styled.div``;
 
 export default () => {
-  const { master, context } = useContext();
+  const {
+    isReady,
+    isPlaying,
+    context,
+    master,
+    options,
+    dispatch,
+  } = useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  useVisualize({ context, master, ref: canvasRef });
-  const { play, stop } = useSynthSingle();
+  useVisualize({
+    isActive: isPlaying,
+    context,
+    master,
+    ref: canvasRef,
+  });
+  const { play, stop } = useSynthSingle(options);
+
+  const handlePlay = useCallback(() => {
+    dispatch({ type: "toggle-playing", value: true });
+    play();
+  }, []);
+
+  const handleStop = useCallback(() => {
+    stop({
+      onEnded: () =>
+        dispatch({ type: "toggle-playing", value: false }),
+    });
+  }, []);
+
   usePlayKey({
-    play,
-    stop,
+    isReady,
+    play: handlePlay,
+    stop: handleStop,
     isActive: true,
+    isPlaying,
     targetKey: "w",
   });
-  console.log(master);
   return (
     <>
       <Canvas
         ref={canvasRef}
-        className="fixed inset-0 w-full h-full bg-blue"
+        className="fixed inset-0 w-full h-full"
       />
       <Root className="relative flex flex-col items-center">
-        <Core className="w-core bg-purple">
-          Hello world
+        <div className="py-6" />
+        <Core className="w-core">
+          <Options />
         </Core>
-        <div className="py-6 bg-red" />
+        <div className="py-6" />
       </Root>
     </>
   );

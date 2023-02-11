@@ -28,16 +28,17 @@ export const Provider: FC<TProviderProps> = ({
     (...args) => {
       const nextState = reducer(...args);
 
-      const next = {
+      setSavedState({
         ...STATE,
         ...nextState,
-      };
+        isPlaying: false,
+        isReady: false,
+      });
 
-      setSavedState(next);
       return nextState;
     },
     STATE,
-    (state) => ({ ...state, savedState }),
+    (state) => ({ ...state, ...savedState }),
   );
 
   return (
