@@ -22,10 +22,12 @@
     "src/**/*.json",
     "src/**/*.ts",
     "src/**/*.js",
-    "src/**/*.tsx"
+    "src/**/*.tsx",
+    "dev/**/*.json",
+    "dev/**/*.ts",
+    "dev/**/*.js",
+    "dev/**/*.tsx"
   ],
-  "files": [
-    "tailwind.config.js"
-  ],
+  "files": ["tailwind.config.js"],
   "extends": "./tsconfig.paths.json"
 }

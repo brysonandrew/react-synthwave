@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
 import { useCallback, useRef } from "react";
 import { useVisualize } from "../logic/visualize/useVisualize";
-import { useSynthSingle } from "@logic/synth/useSynthSingle";
+import { useSynthSingle } from "@synth/single/useSynthSingle";
 import { usePlayKey } from "@logic/key/usePlayKey";
 import { Options } from "./Options";
 

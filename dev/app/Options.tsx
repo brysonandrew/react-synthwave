@@ -3,7 +3,7 @@ import { NumberSlider } from "@components/inputs/number-slider";
 import { Select } from "@components/inputs/select";
 import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
-import { WRITABLE_OSCILLATOR_TYPES } from "@logic/synth/constants";
+import { WRITABLE_OSCILLATOR_TYPES } from "@synth/single/constants";
 
 const Root = styled.div``;
 const List = styled.ul``;

@@ -2,8 +2,8 @@
 const { join } = require("path");
 module.exports = {
   content: [
-    join(__dirname, "./src/**/*.ts"),
-    join(__dirname, "./src/**/*.tsx"),
+    join(__dirname, "./dev/**/*.ts"),
+    join(__dirname, "./dev/**/*.tsx"),
   ],
   theme: {
     extend: {

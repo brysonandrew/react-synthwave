@@ -4,7 +4,6 @@ import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { ITEM_CLASS } from "@constants/index";
 import { Slider as _Slider } from "./input";
-import { GRADIENT } from "src/constants";
 
 export type TSliderProps = HTMLMotionProps<"input"> & {
   name: string;
@@ -44,7 +43,6 @@ export const Slider: FC<TSliderProps> = ({
     <div
       className={clsx(
         "flex relative shadow-purple",
-        GRADIENT,
       )}
     >
       <_Slider name={name} value={value} {...props} />
