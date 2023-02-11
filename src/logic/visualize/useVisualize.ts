@@ -1,7 +1,7 @@
 import type { MutableRefObject } from "react";
 import { useEffect } from "react";
 const BACKGROUND_COLOR = "#000";
-const STROKE_COLOR = "FFF";
+const STROKE_COLOR = "#FFF";
 
 type TConfig = {
   context: AudioContext;
@@ -35,9 +35,6 @@ export const useVisualize = ({
     analyser.fftSize = 2048;
     const bufferLength = analyser.frequencyBinCount;
     const dataArray = new Uint8Array(bufferLength);
-    // const pitchDetectBuffer = new Float32Array(
-    //   bufferLength,
-    // );
     source.connect(analyser);
 
     const draw = () => {

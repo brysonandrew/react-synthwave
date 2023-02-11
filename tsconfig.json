@@ -22,7 +22,7 @@
     "src/**/*.json",
     "src/**/*.ts",
     "src/**/*.js",
-    "src/**/*.tsx", "src/logic/visualize/useVisualize.ts",
+    "src/**/*.tsx"
   ],
   "files": [
     "tailwind.config.js"
