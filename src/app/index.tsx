@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useVisualize } from "../logic/visualize/useVisualize";
 import { useSynthSingle } from "@logic/synth/useSynthSingle";
 import { usePlayKey } from "@logic/key/useTogglePlayKeyPress";
+import { Options } from "./Options";
 
 const Root = styled.div``;
 const Canvas = styled.canvas``;
@@ -28,8 +29,9 @@ export default () => {
         className="fixed inset-0 w-full h-full bg-blue"
       />
       <Root className="relative flex flex-col items-center">
+        <div className="py-6" />
         <Core className="w-core bg-purple">
-          Hello world
+          <Options />
         </Core>
         <div className="py-6 bg-red" />
       </Root>
