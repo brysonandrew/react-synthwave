@@ -8,6 +8,7 @@ export type TSynthOptions = OscillatorOptions &
     attack?: number;
     decay?: number;
     onEnded?(): void;
+    master?:GainNode
   };
 
 export type TWritableOscillatorTypeTuple =

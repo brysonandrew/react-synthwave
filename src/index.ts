@@ -1,1 +1,1 @@
-export * as useSynth from "./single/useSynthSingle";
+export * from "./single/useSynthSingle";

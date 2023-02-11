@@ -28,6 +28,6 @@
     "dev/**/*.js",
     "dev/**/*.tsx"
   ],
-  "files": ["tailwind.config.js"],
+  "files": ["dev/tailwind.config.js"],
   "extends": "./tsconfig.paths.json"
 }

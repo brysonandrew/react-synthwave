@@ -5,6 +5,7 @@ import { useVisualize } from "../logic/visualize/useVisualize";
 import { useSynthSingle } from "@synth/single/useSynthSingle";
 import { usePlayKey } from "@logic/key/usePlayKey";
 import { Options } from "./Options";
+import { useAnimation } from "framer-motion";
 
 const Root = styled.div``;
 const Canvas = styled.canvas``;
@@ -20,13 +21,14 @@ export default () => {
     dispatch,
   } = useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  useAnimation
   useVisualize({
     isActive: isPlaying,
     context,
     master,
     ref: canvasRef,
   });
-  const { play, stop } = useSynthSingle(options);
+  const { play, stop } = useSynthSingle(context, options);
 
   const handlePlay = useCallback(() => {
     dispatch({ type: "toggle-playing", value: true });
