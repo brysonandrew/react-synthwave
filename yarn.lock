@@ -3460,9 +3460,44 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-synthwave@workspace:.":
+"react-synthwave--dev@workspace:dev":
   version: 0.0.0-use.local
-  resolution: "react-synthwave@workspace:."
+  resolution: "react-synthwave--dev@workspace:dev"
+  dependencies:
+    "@emotion/babel-plugin": ^11.10.5
+    "@emotion/react": ^11.10.0
+    "@emotion/styled": ^11.10.0
+    "@originjs/vite-plugin-commonjs": ^1.0.3
+    "@types/node": ^18.11.18
+    "@types/react": ^18.0.17
+    "@types/react-dom": ^18.0.6
+    "@typescript-eslint/eslint-plugin": ^5.14.0
+    "@typescript-eslint/parser": ^5.0.0
+    "@vitejs/plugin-react": ^3.0.1
+    autoprefixer: ^10.4.8
+    clsx: ^1.2.1
+    eslint: ^8.21.0
+    framer-motion: ^9.0.2
+    postcss: ^8.4.16
+    prettier: ^2.8.3
+    react: ^18.2.0
+    react-dom: ^18.2.0
+    react-router: ^6.3.0
+    react-router-dom: ^6.3.0
+    typescript: ^4.9.4
+    vite: ^4.0.4
+    vite-plugin-windicss: ^1.8.10
+    vite-tsconfig-paths: ^3.5.0
+    windicss: ^3.5.6
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  languageName: unknown
+  linkType: soft
+
+"react-synthwave--mono-repo@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "react-synthwave--mono-repo@workspace:."
   dependencies:
     "@babel/core": ^7.20.12
     "@emotion/babel-plugin": ^11.10.5
@@ -3486,6 +3521,32 @@ __metadata:
     react-router: ^6.3.0
     react-router-dom: ^6.3.0
     tailwindcss: ^3.1.8
+    typescript: ^4.9.4
+    vite: ^4.0.4
+    vite-plugin-windicss: ^1.8.10
+    vite-tsconfig-paths: ^3.5.0
+    windicss: ^3.5.6
+  peerDependencies:
+    react: ^18.0.0
+    react-dom: ^18.0.0
+  languageName: unknown
+  linkType: soft
+
+"react-synthwave@workspace:src":
+  version: 0.0.0-use.local
+  resolution: "react-synthwave@workspace:src"
+  dependencies:
+    "@originjs/vite-plugin-commonjs": ^1.0.3
+    "@types/node": ^18.11.18
+    "@types/react": ^18.0.17
+    "@types/react-dom": ^18.0.6
+    "@typescript-eslint/eslint-plugin": ^5.14.0
+    "@typescript-eslint/parser": ^5.0.0
+    "@vitejs/plugin-react": ^3.0.1
+    autoprefixer: ^10.4.8
+    eslint: ^8.21.0
+    postcss: ^8.4.16
+    prettier: ^2.8.3
     typescript: ^4.9.4
     vite: ^4.0.4
     vite-plugin-windicss: ^1.8.10

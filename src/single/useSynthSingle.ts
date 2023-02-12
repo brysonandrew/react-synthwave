@@ -2,7 +2,7 @@ import { useMemo, useRef } from "react";
 import type { TStopOptions, TSynthOptions } from "./types";
 import { resolveMidi } from "./resolvers";
 import { isWritableOscillatorType } from "./guards";
-
+import { WRITABLE_OSCILLATOR_TYPES } from "./constants";
 type TRef = {
   isPlaying: boolean;
   oscillatorNode?: OscillatorNode;
@@ -158,12 +158,13 @@ export const useSynthSingle = (
 
     if (options.master) {
       gainNode.connect(options.master);
-
     } else {
       gainNode.connect(context.destination);
-
     }
   };
 
   return { play: handlePlay, stop: handleStop };
 };
+
+export { WRITABLE_OSCILLATOR_TYPES };
+export { TSynthOptions };

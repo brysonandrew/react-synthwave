@@ -1,5 +1,5 @@
 {
-  "name": "react-synthwave",
+  "name": "react-synthwave--mono-repo",
   "version": "1.0.2",
   "description": "sunset night cruise palm desert",
   "main": "/src/index.ts",
@@ -17,6 +17,10 @@
     "type": "git",
     "url": "git+https://github.com/brysonandrew/react-synthwave.git"
   },
+  "workspaces": [
+    "src",
+    "dev"
+  ],
   "sideEffects": false,
   "keywords": [
     "react",
