@@ -1,9 +1,19 @@
 {
   "name": "react-synthwave",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "sunset night cruise palm desert",
-  "main": "/index.ts",
   "types": "/index.d.ts",
+  "main": "/index.ts",
+  "module": "/index.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./index.ts",
+      "import": "./index.ts",
+      "default": "./index.ts"
+    },
+    "./package.json": "./package.json"
+  },
   "scripts": {
     "format": "prettier .",
     "lint": "tsc --build . & eslint . --fix --ext ts,tsx",

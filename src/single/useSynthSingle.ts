@@ -1,8 +1,8 @@
 import { useMemo, useRef } from "react";
-import type { TStopOptions, TSynthOptions } from "./types";
 import { resolveMidi } from "./resolvers";
 import { isWritableOscillatorType } from "./guards";
 import { WRITABLE_OSCILLATOR_TYPES } from "./constants";
+import { TSynthOptions, TStopOptions } from "./types";
 type TRef = {
   isPlaying: boolean;
   oscillatorNode?: OscillatorNode;

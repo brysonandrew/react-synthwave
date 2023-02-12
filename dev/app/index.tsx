@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
 import { useCallback, useRef } from "react";
 import { useVisualize } from "../logic/visualize/useVisualize";
-import { useSynthSingle } from "react-synthwave";
+import * as RSW from "react-synthwave";
 import { usePlayKey } from "@logic/key/usePlayKey";
 import { Options } from "./Options";
 import { useAnimation } from "framer-motion";
@@ -12,6 +12,8 @@ const Canvas = styled.canvas``;
 const Core = styled.div``;
 
 export default () => {
+  console.log(RSW)
+
   const {
     isReady,
     isPlaying,
@@ -28,7 +30,8 @@ export default () => {
     master,
     ref: canvasRef,
   });
-  const { play, stop } = useSynthSingle(context, options);
+  // const { play, stop } = useSynthSingle(context, options);
+  const { play, stop } = RSW.useSynthMulti(context, [...Array(11)].map(() => ({...options})));
 
   const handlePlay = useCallback(() => {
     dispatch({ type: "toggle-playing", value: true });
