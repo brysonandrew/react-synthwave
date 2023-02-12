@@ -26,6 +26,15 @@ export const reducer = (
         },
       };
     }
+    case "update-multi": {
+      return {
+        ...state,
+        multi: {
+          ...state.multi,
+          ...value,
+        },
+      };
+    }
     default: {
       console.error(type);
       throw new Error(`⚠ Action type invalid. ${type}`);

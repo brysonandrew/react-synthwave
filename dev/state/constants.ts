@@ -13,6 +13,8 @@ export const STATE: TState = {
     gain: 0.4,
     attack: 0.2,
     decay: 0.2,
+  },
+  multi: {
     count: 2,
     spread: 0,
   },

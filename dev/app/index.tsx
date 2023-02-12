@@ -17,7 +17,8 @@ export default () => {
     isPlaying,
     context,
     master,
-    options: allOptions,
+    options,
+    multi,
     dispatch,
   } = useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -28,12 +29,11 @@ export default () => {
     master,
     ref: canvasRef,
   });
-  const { spread, count, ...options } = allOptions;
-  const { play, stop } = useSynthMulti(
-    context,
-    options,
-    { spread, count },
-  );
+  const { spread, count } = multi;
+  const { play, stop } = useSynthMulti(context, options, {
+    spread,
+    count,
+  });
 
   const handlePlay = useCallback(() => {
     dispatch({ type: "toggle-playing", value: true });
