@@ -30,7 +30,6 @@ export const Slider: FC<TSliderProps> = ({
 }) => (
   <Root
     className={clsx(
-      INPUT_CLASS,
       "relative h-full w-full z-0",
       labelClassValue,
     )}

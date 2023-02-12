@@ -29,11 +29,11 @@ export default () => {
     master,
     ref: canvasRef,
   });
-  const { spread, count } = multi;
-  const { play, stop } = useSynthMulti(context, options, {
-    spread,
-    count,
-  });
+  const { play, stop } = useSynthMulti(
+    context,
+    options,
+    multi,
+  );
 
   const handlePlay = useCallback(() => {
     dispatch({ type: "toggle-playing", value: true });

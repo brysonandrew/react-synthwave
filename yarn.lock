@@ -883,7 +883,6 @@ __metadata:
     react-dom: ^18.2.0
     react-router: ^6.3.0
     react-router-dom: ^6.3.0
-    react-synthwave: ^1.0.6
     tailwindcss: ^3.2.6
     typescript: ^4.9.4
     vite: ^4.0.4
@@ -3495,16 +3494,6 @@ __metadata:
   peerDependencies:
     react: ">=16.8"
   checksum: 8e7cc7a516adeb6060911861af99d9b512893c15ec732cbf8574872919be4f3fe439ffa8c0876d1bcbced880d081bfeda3c01cb505b5a243565d10500ee0ac36
-  languageName: node
-  linkType: hard
-
-"react-synthwave@npm:^1.0.6":
-  version: 1.0.6
-  resolution: "react-synthwave@npm:1.0.6"
-  peerDependencies:
-    react: ^18.0.0
-    react-dom: ^18.0.0
-  checksum: 53c19d199b4eb3935c32ac8ac8a9d1d88c7c6ace8a2d51cb7f0e19cf2e043718190c488e65e367f225b756f4901a30c3bcc3eca3d63c411af056e7c6b46626e3
   languageName: node
   linkType: hard
 

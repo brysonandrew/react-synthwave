@@ -7,6 +7,7 @@ export type TSynthOptions = OscillatorOptions &
     end?: number;
     attack?: number;
     decay?: number;
+    delay?: number;
     onEnded?(isDone: boolean): void;
     master?: GainNode;
   };
@@ -24,5 +25,5 @@ export type TWritableOscillatorTypeKey =
 
 export type TStopOptions = Pick<
   TSynthOptions,
-  "gain" | "decay" | "end" | "onEnded"
+  "gain" | "decay" | "end" | "onEnded" | "delay"
 >;

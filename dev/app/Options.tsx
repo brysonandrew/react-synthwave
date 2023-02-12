@@ -3,7 +3,7 @@ import { NumberSlider } from "@components/inputs/number-slider";
 import { Select } from "@components/inputs/select";
 import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
-import { WRITABLE_OSCILLATOR_TYPES } from "react-synthwave";
+import { WRITABLE_OSCILLATOR_TYPES } from "../../src";
 
 const Root = styled.div``;
 const List = styled.ul``;
@@ -104,6 +104,18 @@ export const Options: FC = () => {
                 onChange={handleChange}
               />
             </Item>
+            <Item className="py-1" />
+            <Item>
+              <NumberSlider
+                name="options.delay"
+                title="delay"
+                value={options.delay}
+                min="0"
+                max="6"
+                step="0.1"
+                onChange={handleChange}
+              />
+            </Item>
           </List>
         </Item>
         <Item className="py-1" />
@@ -129,6 +141,18 @@ export const Options: FC = () => {
                 min="1"
                 max="400"
                 step="1"
+                onChange={handleChange}
+              />
+            </Item>
+            <Item className="py-1" />
+            <Item>
+              <NumberSlider
+                name="multi.stagger"
+                title="stagger"
+                value={multi.stagger}
+                min="0"
+                max="5"
+                step="0.01"
                 onChange={handleChange}
               />
             </Item>

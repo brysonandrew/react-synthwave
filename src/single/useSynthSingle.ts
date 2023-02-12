@@ -90,19 +90,23 @@ export const useSynthSingle = (
       end = context.currentTime,
       onEnded,
       decay,
+      delay = 0,
     } = optionsRef.current;
+
+    if (end === Infinity) return;
+
+    const e1 = end + delay;
 
     const gain = optionsRef.current.gain ?? 1;
     if (typeof decay === "number") {
-      gainNode.gain.setValueAtTime(
-        gainNode.gain.value,
-        end,
-      );
-      gainNode.gain.linearRampToValueAtTime(0, end + decay);
-      oscillatorNode.stop(end + decay);
+      const e2 = e1 + decay;
+
+      gainNode.gain.setValueAtTime(gainNode.gain.value, e1);
+      gainNode.gain.linearRampToValueAtTime(0, e2);
+      oscillatorNode.stop(e2);
     } else {
       gainNode.gain.value = gain;
-      oscillatorNode.stop(end);
+      oscillatorNode.stop(e1);
     }
 
     oscillatorNode.onended = () => {
@@ -154,6 +158,7 @@ export const useSynthSingle = (
       attack,
       decay,
       gain = 1,
+      delay = 0,
       onEnded,
     } = optionsRef.current;
 
@@ -177,10 +182,10 @@ export const useSynthSingle = (
       oscillatorNode.detune.value = detune;
     }
 
-    oscillatorNode.start(start);
+    oscillatorNode.start(start + delay);
 
     if (typeof attack === "number") {
-      gainNode.gain.setValueAtTime(0, start);
+      gainNode.gain.setValueAtTime(0, start + delay);
       gainNode.gain.linearRampToValueAtTime(
         gain,
         start + attack,
@@ -189,8 +194,8 @@ export const useSynthSingle = (
       gainNode.gain.value = gain;
     }
 
-    if (typeof end === "number") {
-      handleStop({ gain, decay, end, onEnded });
+    if (typeof end === "number" && end !== Infinity) {
+      handleStop({ gain, decay, end, delay, onEnded });
     }
 
     oscillatorNode.connect(gainNode);

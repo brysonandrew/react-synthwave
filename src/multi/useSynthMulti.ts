@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import type { TSynthOptions, TStopOptions } from "..";
 import { useSynthSingle } from "..";
-import { TMultiOptions } from "./types";
+import type { TMultiOptions } from "./types";
 
 export const useSynthMulti = (
   context: AudioContext,
@@ -27,7 +27,7 @@ export const useSynthMulti = (
   const handlePlay = async (
     playOptions: TSynthOptions = {},
   ) => {
-    const { count, spread } = currentRef.current;
+    const { count, spread, stagger } = currentRef.current;
     await context.resume();
     [...Array(count ?? 1)].forEach(
       (options, index, { length }) => {
@@ -36,6 +36,7 @@ export const useSynthMulti = (
         next.play({
           ...options,
           ...playOptions,
+          delay: (index * 0.1) * (stagger ?? 0),
           gain: 1 / (length * 0.5),
           detune:
             (index - ~~(length * 0.5)) * (spread ?? 0),

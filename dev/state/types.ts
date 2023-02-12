@@ -4,8 +4,7 @@ import type {
   ReducerState,
   ReducerAction,
 } from "react";
-import type { TSynthOptions } from "react-synthwave";
-import { TMultiOptions } from "src/multi/types";
+import type { TSynthOptions, TMultiOptions } from "../../src";
 
 export type TContext = TState & {
   context: AudioContext;
