@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
 import { useCallback, useRef } from "react";
 import { useVisualize } from "../logic/visualize/useVisualize";
-import * as RSW from "react-synthwave";
+import { useSynthMulti } from "../../src/multi/useSynthMulti";
 import { usePlayKey } from "@logic/key/usePlayKey";
 import { Options } from "./Options";
 import { useAnimation } from "framer-motion";
@@ -12,14 +12,12 @@ const Canvas = styled.canvas``;
 const Core = styled.div``;
 
 export default () => {
-  console.log(RSW)
-
   const {
     isReady,
     isPlaying,
     context,
     master,
-    options,
+    options: allOptions,
     dispatch,
   } = useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -30,18 +28,28 @@ export default () => {
     master,
     ref: canvasRef,
   });
-  // const { play, stop } = useSynthSingle(context, options);
-  const { play, stop } = RSW.useSynthMulti(context, [...Array(11)].map(() => ({...options})));
+  const { spread, count, ...options } = allOptions;
+  const { play, stop } = useSynthMulti(
+    context,
+    options,
+    { spread, count },
+  );
 
   const handlePlay = useCallback(() => {
     dispatch({ type: "toggle-playing", value: true });
-    play();
+    play({ ...options, master });
   }, []);
 
   const handleStop = useCallback(() => {
     stop({
-      onEnded: () =>
-        dispatch({ type: "toggle-playing", value: false }),
+      onEnded: (isDone: boolean) => {
+        if (isDone) {
+          dispatch({
+            type: "toggle-playing",
+            value: false,
+          });
+        }
+      },
     });
   }, []);
 
@@ -53,6 +61,7 @@ export default () => {
     isPlaying,
     targetKey: "w",
   });
+
   return (
     <>
       <Canvas

@@ -8,7 +8,7 @@
       "@logic/*": ["dev/logic/*"],
       "@state/*": ["dev/state/*"],
       "@styles/*": ["dev/styles/*"],
-      "@types/*": ["dev/types/*"],
+      "@t/*": ["dev/t/*"],
       "@tailwind/*": ["tailwind.*"]
     }
   }

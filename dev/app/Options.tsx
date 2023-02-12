@@ -101,6 +101,30 @@ export const Options: FC = () => {
             onChange={handleChange}
           />
         </Item>
+        <Item className="py-1" />
+        <Item>
+          <NumberSlider
+            name="spread"
+            title="spread"
+            value={options.spread}
+            min="0"
+            max="400"
+            step="1"
+            onChange={handleChange}
+          />
+        </Item>
+        <Item className="py-1" />
+        <Item>
+          <NumberSlider
+            name="count"
+            title="count"
+            value={options.count}
+            min="0"
+            max="400"
+            step="1"
+            onChange={handleChange}
+          />
+        </Item>
       </List>
     </Root>
   );

@@ -5,6 +5,7 @@ import type {
   ReducerAction,
 } from "react";
 import type { TSynthOptions } from "react-synthwave";
+import { TMultiOptions } from "src/multi/types";
 
 export type TContext = TState & {
   context: AudioContext;
@@ -29,7 +30,7 @@ export type TAction =
 export type TState = {
   isReady: boolean;
   isPlaying: boolean;
-  options: TSynthOptions;
+  options: TSynthOptions & TMultiOptions;
 };
 
 export type TActionType = null;

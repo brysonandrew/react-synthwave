@@ -1,32 +1,47 @@
-import { TStopOptions } from "src/single/types";
-import {
-  TSynthOptions,
-  useSynthSingle,
-} from "../single/useSynthSingle";
+import { useRef } from "react";
+import type { TSynthOptions, TStopOptions } from "..";
+import { useSynthSingle } from "..";
+import { TMultiOptions } from "./types";
 
 export const useSynthMulti = (
   context: AudioContext,
-  synths: TSynthOptions[],
+  synthOptions: TSynthOptions,
+  options: TMultiOptions = {},
 ) => {
-  const synth = useSynthSingle(context);
+  const current = options;
+  const currentRef = useRef(current);
+  currentRef.current = current;
+  const synth = useSynthSingle(context, synthOptions);
 
-  const x: ReturnType<typeof useSynthSingle>[] = [];
+  const synthsRef = useRef<
+    ReturnType<typeof useSynthSingle>[]
+  >([]);
 
   const handleStop = async (options: TStopOptions) => {
-    x.forEach((s) => {
+    synthsRef.current.forEach((s) => {
       s.stop(options);
     });
+    synthsRef.current = [];
   };
 
   const handlePlay = async (
-    options: TSynthOptions = {},
+    playOptions: TSynthOptions = {},
   ) => {
+    const { count, spread } = currentRef.current;
     await context.resume();
-    synths.forEach(() => {
-      const next = { ...synth };
-      x.push(next);
-      next.play(options);
-    });
+    [...Array(count ?? 1)].forEach(
+      (options, index, { length }) => {
+        const next = { ...synth };
+        synthsRef.current.push(next);
+        next.play({
+          ...options,
+          ...playOptions,
+          gain: 1 / (length * 0.5),
+          detune:
+            (index - ~~(length * 0.5)) * (spread ?? 0),
+        });
+      },
+    );
   };
 
   return { play: handlePlay, stop: handleStop };

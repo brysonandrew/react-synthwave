@@ -1,8 +1,8 @@
 import { useMemo, useRef } from "react";
 import { resolveMidi } from "./resolvers";
 import { isWritableOscillatorType } from "./guards";
-import { WRITABLE_OSCILLATOR_TYPES } from "./constants";
-import { TSynthOptions, TStopOptions } from "./types";
+import type { TSynthOptions, TStopOptions } from "..";
+
 type TRef = {
   isPlaying: boolean;
   oscillatorNode?: OscillatorNode;
@@ -26,6 +26,9 @@ export const useSynthSingle = (
   const currentRef = useRef<TRef>({
     isPlaying: false,
   });
+
+  const clonesRef = useRef<OscillatorNode[]>([]);
+  const gainClonesRef = useRef<GainNode[]>([]);
 
   const createOscillatorNode = useMemo(() => {
     const handler = () =>
@@ -58,11 +61,24 @@ export const useSynthSingle = (
     ...current,
   };
 
-  const handleStop = async (options: TStopOptions = {}) => {
-    await context.resume();
+  const handleStop = (options: TStopOptions = {}) => {
     const { current } = currentRef;
-    if (!current.isPlaying) return;
-    const { gainNode, oscillatorNode } = current;
+
+    const oscillatorNode = !current.isPlaying
+      ? clonesRef.current.shift()
+      : current.oscillatorNode;
+
+    if (!current.isPlaying) {
+      current.gainNode = createRef.current.createGainNode();
+      current.oscillatorNode =
+        createRef.current.createOscillatorNode();
+    }
+    const gainNode = !current.isPlaying
+      ? gainClonesRef.current.shift()
+      : current.gainNode;
+
+    current.isPlaying = false;
+
     if (!gainNode || !oscillatorNode) return;
 
     optionsRef.current = {
@@ -71,14 +87,17 @@ export const useSynthSingle = (
     };
 
     const {
-      gain = 1,
       end = context.currentTime,
       onEnded,
       decay,
     } = optionsRef.current;
 
+    const gain = optionsRef.current.gain ?? 1;
     if (typeof decay === "number") {
-      gainNode.gain.setValueAtTime(gain, end);
+      gainNode.gain.setValueAtTime(
+        gainNode.gain.value,
+        end,
+      );
       gainNode.gain.linearRampToValueAtTime(0, end + decay);
       oscillatorNode.stop(end + decay);
     } else {
@@ -87,14 +106,12 @@ export const useSynthSingle = (
     }
 
     oscillatorNode.onended = () => {
-      current.isPlaying = false;
-
-      current.oscillatorNode =
-        createRef.current.createOscillatorNode();
       gainNode.disconnect();
 
+      const isDone = clonesRef.current.length === 0;
+
       if (onEnded) {
-        onEnded();
+        onEnded(isDone);
       }
     };
   };
@@ -104,9 +121,23 @@ export const useSynthSingle = (
   ) => {
     await context.resume();
     const { current } = currentRef;
-    if (current.isPlaying) return;
+    if (current.isPlaying) {
+      const o = createRef.current.createOscillatorNode();
+      const g = createRef.current.createGainNode();
+      clonesRef.current.push(o);
+      gainClonesRef.current.push(g);
+    }
+    const oscillatorNode = current.isPlaying
+      ? clonesRef.current[clonesRef.current.length - 1]
+      : current.oscillatorNode;
+
+    const gainNode = current.isPlaying
+      ? gainClonesRef.current[
+          gainClonesRef.current.length - 1
+        ]
+      : current.gainNode;
+
     current.isPlaying = true;
-    const { oscillatorNode, gainNode } = current;
     if (!gainNode || !oscillatorNode) return;
 
     optionsRef.current = {
@@ -126,12 +157,20 @@ export const useSynthSingle = (
       onEnded,
     } = optionsRef.current;
 
+    optionsRef.current.gain = gain;
+
     if (isWritableOscillatorType(type)) {
       oscillatorNode.type = type;
     }
 
-    if (typeof frequency === "number") {
-      oscillatorNode.frequency.value = frequency;
+    if (
+      typeof midi === "number" ||
+      typeof frequency === "number"
+    ) {
+      oscillatorNode.frequency.value = resolveMidi({
+        midi,
+        frequency,
+      });
     }
 
     if (typeof detune === "number") {
@@ -151,7 +190,7 @@ export const useSynthSingle = (
     }
 
     if (typeof end === "number") {
-      handleStop({ decay, end, onEnded });
+      handleStop({ gain, decay, end, onEnded });
     }
 
     oscillatorNode.connect(gainNode);
@@ -165,6 +204,3 @@ export const useSynthSingle = (
 
   return { play: handlePlay, stop: handleStop };
 };
-
-export { WRITABLE_OSCILLATOR_TYPES };
-export { TSynthOptions };
