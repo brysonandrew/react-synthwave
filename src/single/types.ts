@@ -8,8 +8,8 @@ export type TSynthOptions = OscillatorOptions &
     attack?: number;
     decay?: number;
     delay?: number;
+    output?: AudioNode | GainNode | AudioParam | BiquadFilterNode | AudioWorkletNode;
     onEnded?(isDone: boolean): void;
-    master?: GainNode;
   };
 
 export type TWritableOscillatorTypeTuple =

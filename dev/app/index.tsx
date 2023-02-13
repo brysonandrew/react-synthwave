@@ -22,13 +22,14 @@ export default () => {
     dispatch,
   } = useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  useAnimation;
+
   useVisualize({
     isActive: isPlaying,
     context,
     master,
     ref: canvasRef,
   });
+
   const { play, stop } = useSynthMulti(
     context,
     options,
@@ -37,7 +38,7 @@ export default () => {
 
   const handlePlay = useCallback(() => {
     dispatch({ type: "toggle-playing", value: true });
-    play({ ...options, master });
+    play({ ...options, output: master });
   }, []);
 
   const handleStop = useCallback(() => {

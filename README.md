@@ -17,3 +17,7 @@ sunset night cruise palm desert
 ### 👩🏻‍⚖️ License
 
 - React Synthwave is MIT licensed.
+
+### 📚 Docs
+
+- Coming soon

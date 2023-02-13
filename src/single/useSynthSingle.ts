@@ -1,6 +1,9 @@
 import { useMemo, useRef } from "react";
 import { resolveMidi } from "./resolvers";
-import { isWritableOscillatorType } from "./guards";
+import {
+  isAudioParam,
+  isWritableOscillatorType,
+} from "./guards";
 import type { TSynthOptions, TStopOptions } from "..";
 
 type TRef = {
@@ -19,7 +22,6 @@ export const useSynthSingle = (
   options: TSynthOptions = {},
 ) => {
   const { type, midi, frequency, detune, gain } = options;
-
   const optionsRef = useRef<TSynthOptions>(options);
   optionsRef.current = options;
 
@@ -47,35 +49,35 @@ export const useSynthSingle = (
     return handler;
   }, [gain]);
 
-  const current = {
+  const createHandlers = {
     createOscillatorNode,
     createGainNode,
   };
 
   const createRef = useRef<TCreateRef>({
-    ...current,
+    ...createHandlers,
   });
 
   createRef.current = {
     ...createRef.current,
-    ...current,
+    ...createHandlers,
   };
 
   const handleStop = (options: TStopOptions = {}) => {
     const { current } = currentRef;
-
     const oscillatorNode = !current.isPlaying
       ? clonesRef.current.shift()
       : current.oscillatorNode;
 
-    if (!current.isPlaying) {
-      current.gainNode = createRef.current.createGainNode();
-      current.oscillatorNode =
-        createRef.current.createOscillatorNode();
-    }
     const gainNode = !current.isPlaying
       ? gainClonesRef.current.shift()
       : current.gainNode;
+
+    if (current.isPlaying) {
+      current.oscillatorNode =
+        createRef.current.createOscillatorNode();
+      current.gainNode = createRef.current.createGainNode();
+    }
 
     current.isPlaying = false;
 
@@ -86,6 +88,10 @@ export const useSynthSingle = (
       ...options,
     };
 
+    if (optionsRef.current.end === Infinity) {
+      optionsRef.current.end = context.currentTime;
+    }
+
     const {
       end = context.currentTime,
       onEnded,
@@ -93,25 +99,20 @@ export const useSynthSingle = (
       delay = 0,
     } = optionsRef.current;
 
-    if (end === Infinity) return;
-
     const e1 = end + delay;
 
-    const gain = optionsRef.current.gain ?? 1;
+    gainNode.gain.setValueAtTime(gainNode.gain.value, e1);
+
     if (typeof decay === "number") {
       const e2 = e1 + decay;
-
-      gainNode.gain.setValueAtTime(gainNode.gain.value, e1);
       gainNode.gain.linearRampToValueAtTime(0, e2);
       oscillatorNode.stop(e2);
     } else {
-      gainNode.gain.value = gain;
       oscillatorNode.stop(e1);
     }
 
     oscillatorNode.onended = () => {
       gainNode.disconnect();
-
       const isDone = clonesRef.current.length === 0;
 
       if (onEnded) {
@@ -125,6 +126,7 @@ export const useSynthSingle = (
   ) => {
     await context.resume();
     const { current } = currentRef;
+
     if (current.isPlaying) {
       const o = createRef.current.createOscillatorNode();
       const g = createRef.current.createGainNode();
@@ -182,26 +184,30 @@ export const useSynthSingle = (
       oscillatorNode.detune.value = detune;
     }
 
-    oscillatorNode.start(start + delay);
+    const s1 = start + delay;
+    oscillatorNode.start(s1);
 
     if (typeof attack === "number") {
-      gainNode.gain.setValueAtTime(0, start + delay);
-      gainNode.gain.linearRampToValueAtTime(
-        gain,
-        start + attack,
-      );
+      const s2 = s1 + attack;
+      gainNode.gain.setValueAtTime(0, s1);
+      gainNode.gain.linearRampToValueAtTime(gain, s2);
     } else {
-      gainNode.gain.value = gain;
+      gainNode.gain.setValueAtTime(gain, s1);
     }
 
     if (typeof end === "number" && end !== Infinity) {
       handleStop({ gain, decay, end, delay, onEnded });
     }
 
+    console.log(oscillatorNode, gainNode);
     oscillatorNode.connect(gainNode);
 
-    if (options.master) {
-      gainNode.connect(options.master);
+    if (typeof options.output !== "undefined") {
+      if (isAudioParam(options.output)) {
+        gainNode.connect(options.output);
+      } else {
+        gainNode.connect(options.output);
+      }
     } else {
       gainNode.connect(context.destination);
     }
