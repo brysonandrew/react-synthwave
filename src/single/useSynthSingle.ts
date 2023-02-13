@@ -199,7 +199,6 @@ export const useSynthSingle = (
       handleStop({ gain, decay, end, delay, onEnded });
     }
 
-    console.log(oscillatorNode, gainNode);
     oscillatorNode.connect(gainNode);
 
     if (typeof options.output !== "undefined") {
