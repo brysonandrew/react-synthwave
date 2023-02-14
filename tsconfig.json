@@ -18,16 +18,7 @@
     "jsx": "react-jsx",
     "allowJs": true
   },
-  "include": [
-    "src/**/*.json",
-    "src/**/*.ts",
-    "src/**/*.js",
-    "src/**/*.tsx",
-    "dev/**/*.json",
-    "dev/**/*.ts",
-    "dev/**/*.js",
-    "dev/**/*.tsx"
-  ],
-  "files": ["dev/tailwind.config.js"],
+  "include": ["**/*.json", "**/*.ts", "**/*.js", "**/*.tsx"],
+  "files": ["./tailwind.config.js"],
   "extends": "./tsconfig.paths.json"
 }

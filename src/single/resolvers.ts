@@ -19,7 +19,10 @@ export const resolveMidi = ({
   if (typeof midi === "number") {
     return midiToHz(midi);
   }
-  return frequency;
+  if (typeof frequency === "number") {
+    return frequency;
+  }
+  return 440;
 };
 
 // export type TResolveOptionsConfig = {

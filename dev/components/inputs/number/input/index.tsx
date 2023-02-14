@@ -5,7 +5,7 @@ import styled from "@emotion/styled";
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { INPUT_CLASS } from "@constants/index";
-import type { TChildren } from "dev/t";
+import type { TChildren } from "@t/index";
 
 const Root = styled(motion.label)``;
 const Input = styled(motion.input)``;

@@ -4,7 +4,7 @@ import type {
   ReducerState,
   ReducerAction,
 } from "react";
-import type { TSynthOptions } from "@synth/single/types";
+import type { TSynthOptions, TMultiOptions } from "../../src";
 
 export type TContext = TState & {
   context: AudioContext;
@@ -24,12 +24,17 @@ export type TAction =
   | {
       type: "update-options";
       value: Partial<TSynthOptions>;
+    }
+  | {
+      type: "update-multi";
+      value: Partial<TMultiOptions>;
     };
 
 export type TState = {
   isReady: boolean;
   isPlaying: boolean;
   options: TSynthOptions;
+  multi: TMultiOptions;
 };
 
 export type TActionType = null;

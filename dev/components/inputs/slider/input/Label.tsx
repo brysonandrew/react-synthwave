@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import clsx from "clsx";
-import config from "dev/tailwind.config"
+import config from "@tailwind/config";
 
 type TProps = {
   prefix: string;

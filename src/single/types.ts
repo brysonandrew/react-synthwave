@@ -7,8 +7,9 @@ export type TSynthOptions = OscillatorOptions &
     end?: number;
     attack?: number;
     decay?: number;
-    onEnded?(): void;
-    master?:GainNode
+    delay?: number;
+    output?: AudioNode | GainNode | AudioParam | BiquadFilterNode | AudioWorkletNode;
+    onEnded?(isDone: boolean): void;
   };
 
 export type TWritableOscillatorTypeTuple =
@@ -24,5 +25,5 @@ export type TWritableOscillatorTypeKey =
 
 export type TStopOptions = Pick<
   TSynthOptions,
-  "gain" | "decay" | "end" | "onEnded"
+  "gain" | "decay" | "end" | "onEnded" | "delay"
 >;

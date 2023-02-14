@@ -2,13 +2,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@synth/*": ["src/*"],
       "@app/*": ["dev/app/*"],
       "@constants/*": ["dev/constants/*"],
       "@components/*": ["dev/components/*"],
       "@logic/*": ["dev/logic/*"],
       "@state/*": ["dev/state/*"],
       "@styles/*": ["dev/styles/*"],
+      "@t/*": ["dev/t/*"],
       "@tailwind/*": ["tailwind.*"]
     }
   }
