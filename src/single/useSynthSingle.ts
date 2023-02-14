@@ -11,7 +11,7 @@ type TRef = {
   oscillatorNode?: OscillatorNode;
   gainNode?: GainNode;
 };
-
+ 
 type TCreateRef = {
   createOscillatorNode: () => OscillatorNode;
   createGainNode: () => GainNode;
@@ -19,11 +19,12 @@ type TCreateRef = {
 
 export const useSynthSingle = (
   context: AudioContext,
-  options: TSynthOptions = {},
+  originalOptions: TSynthOptions = {},
 ) => {
-  const { type, midi, frequency, detune, gain } = options;
-  const optionsRef = useRef<TSynthOptions>(options);
-  optionsRef.current = options;
+  const { type, midi, frequency, detune, gain } =
+    originalOptions;
+  const optionsRef = useRef<TSynthOptions>(originalOptions);
+  optionsRef.current = originalOptions;
 
   const currentRef = useRef<TRef>({
     isPlaying: false,
@@ -64,24 +65,28 @@ export const useSynthSingle = (
   };
 
   const handleStop = (options: TStopOptions = {}) => {
-    const { current } = currentRef;
-    const oscillatorNode = !current.isPlaying
+    const oscillatorNode = !currentRef.current.isPlaying
       ? clonesRef.current.shift()
-      : current.oscillatorNode;
+      : currentRef.current.oscillatorNode;
 
-    const gainNode = !current.isPlaying
+    const gainNode = !currentRef.current.isPlaying
       ? gainClonesRef.current.shift()
-      : current.gainNode;
+      : currentRef.current.gainNode;
 
-    if (current.isPlaying) {
-      current.oscillatorNode =
+    if (currentRef.current.isPlaying) {
+      currentRef.current.oscillatorNode =
         createRef.current.createOscillatorNode();
-      current.gainNode = createRef.current.createGainNode();
+      currentRef.current.gainNode =
+        createRef.current.createGainNode();
     }
 
-    current.isPlaying = false;
+    currentRef.current.isPlaying = false;
 
-    if (!gainNode || !oscillatorNode) return;
+    if (!gainNode || !oscillatorNode) {
+      throw new Error(
+        "Internal error: gain or oscillator node not found",
+      );
+    }
 
     optionsRef.current = {
       ...optionsRef.current,
@@ -115,6 +120,10 @@ export const useSynthSingle = (
       gainNode.disconnect();
       const isDone = clonesRef.current.length === 0;
 
+      if (isDone) {
+        optionsRef.current = originalOptions;
+      }
+
       if (onEnded) {
         onEnded(isDone);
       }
@@ -125,26 +134,40 @@ export const useSynthSingle = (
     options: TSynthOptions = {},
   ) => {
     await context.resume();
-    const { current } = currentRef;
 
-    if (current.isPlaying) {
+    if (!currentRef.current.oscillatorNode) {
+      currentRef.current.oscillatorNode =
+        createRef.current.createOscillatorNode();
+    }
+    if (!currentRef.current.gainNode) {
+      currentRef.current.gainNode =
+        createRef.current.createGainNode();
+    }
+
+    if (currentRef.current.isPlaying) {
       const o = createRef.current.createOscillatorNode();
       const g = createRef.current.createGainNode();
       clonesRef.current.push(o);
       gainClonesRef.current.push(g);
     }
-    const oscillatorNode = current.isPlaying
-      ? clonesRef.current[clonesRef.current.length - 1]
-      : current.oscillatorNode;
 
-    const gainNode = current.isPlaying
+    const oscillatorNode = currentRef.current.isPlaying
+      ? clonesRef.current[clonesRef.current.length - 1]
+      : currentRef.current.oscillatorNode;
+
+    const gainNode = currentRef.current.isPlaying
       ? gainClonesRef.current[
           gainClonesRef.current.length - 1
         ]
-      : current.gainNode;
+      : currentRef.current.gainNode;
 
-    current.isPlaying = true;
-    if (!gainNode || !oscillatorNode) return;
+    currentRef.current.isPlaying = true;
+
+    if (!gainNode || !oscillatorNode) {
+      throw new Error(
+        "Internal error: gain or oscillator node not found",
+      );
+    }
 
     optionsRef.current = {
       ...optionsRef.current,
@@ -167,7 +190,7 @@ export const useSynthSingle = (
     optionsRef.current.gain = gain;
 
     if (isWritableOscillatorType(type)) {
-      oscillatorNode.type = type;
+      currentRef.current.oscillatorNode.type = type;
     }
 
     if (
@@ -178,6 +201,8 @@ export const useSynthSingle = (
         midi,
         frequency,
       });
+    } else {
+      console.error("No frequency or midi value provided");
     }
 
     if (typeof detune === "number") {

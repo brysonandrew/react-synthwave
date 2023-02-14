@@ -4,20 +4,82 @@
 </p>
 <h1 align="center">React Synthwave</h1>
 <h3 align="center">
-sunset night cruise palm desert
+ Play synth sounds using Web Audio oscillators
 </h3>
-<br/>
-<p align="center">
-  <a href="https://www.framer.com?utm_source=motion">
-    empty link
-  </a>
-</p>
-<br>
+
+### 📚 Docs
+
+#### Hooks
+
+- useSynthSingle
+
+Will play a single oscillator each time play is called
+
+- input: context: AudioContext,
+  - options: TSynthOptions
+    - output:
+      - play:
+        - input:
+          - options: TSynthOptions
+        - output: void
+      - stop:
+        - input:
+          - options: TStopOptions
+        - output: void
+
+```jsx
+import { useSynthSingle } from "react-synthwave";
+
+const synth = useSynthSingle(context, options);
+
+return {
+  <div>
+    <button onClick={() => synth.play({attack:0.2})}>
+     ▷
+    </button>
+    <button onClick={() => synth.stop({delay:0.2})}>
+      ▣
+    </button>
+  </div>
+}
+```
+
+- useSynthMulti
+
+Will play multiple oscillators over the top of each other.
+
+- input:
+  - context: AudioContext
+  - synthOptions: TSynthOptions
+  - multiOptions: TMultiOptions
+    - output:
+      - play:
+        - input:
+          - synthOptions: TSynthOptions
+          - multiOptions: TMultiOptions
+        - output: void
+      - stop:
+        - input:
+          - options: TStopOptions
+        - output: void
+
+```jsx
+import { useSynthMulti } from "react-synthwave";
+
+const synth = useSynthMulti(context, options, {count: 3});
+
+return {
+  <div>
+    <button onClick={() => synth.play({midi: 28})}>
+     ▷
+    </button>
+    <button onClick={() => synth.stop({end:context.currentTime + 5})}>
+      ▣
+    </button>
+  </div>
+}
+```
 
 ### 👩🏻‍⚖️ License
 
 - React Synthwave is MIT licensed.
-
-### 📚 Docs
-
-- Coming soon
