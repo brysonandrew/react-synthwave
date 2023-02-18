@@ -1,26 +1,19 @@
+import { useCallback, useRef } from "react";
 import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
-import { useCallback, useRef } from "react";
+import { usePlayKey } from "@logic/key/usePlayKey";
+import { DOUBLE } from "dev/mocks";
 import { useVisualize } from "../logic/visualize/useVisualize";
 import { useSynthMulti } from "../../src/multi/useSynthMulti";
-import { usePlayKey } from "@logic/key/usePlayKey";
 import { Options } from "./Options";
-import { useAnimation } from "framer-motion";
 
 const Root = styled.div``;
 const Canvas = styled.canvas``;
 const Core = styled.div``;
 
 export default () => {
-  const {
-    isReady,
-    isPlaying,
-    context,
-    master,
-    options,
-    multi,
-    dispatch,
-  } = useContext();
+  const { isReady, isPlaying, context, master, dispatch } =
+    useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useVisualize({
@@ -30,11 +23,16 @@ export default () => {
     ref: canvasRef,
   });
 
-  const { play, stop } = useSynthMulti(context, options);
-
-  const handlePlay = useCallback(() => {
+  const { play, stop } = useSynthMulti(context);
+  const handlePlay = useCallback(async () => {
     dispatch({ type: "toggle-playing", value: true });
-    play({ ...options, output: master });
+    const arr = await play(
+      DOUBLE.map(({ ...v }) => ({ ...v, output: master })),
+    );
+    arr.forEach(({ o, g }) => {
+      o.connect(g);
+      g.connect(master);
+    });
   }, []);
 
   const handleStop = useCallback(() => {
@@ -52,7 +50,7 @@ export default () => {
 
   usePlayKey({
     isReady,
-    play: handlePlay,
+    play: () => handlePlay(),
     stop: handleStop,
     isActive: true,
     isPlaying,

@@ -37,3 +37,5 @@ export type TSingleSynth = {
   play: (options?: TSynthOptions) => Promise<void>;
   stop: (options?: TStopOptions) => void;
 };
+
+export type TBasic = { o: OscillatorNode; g: GainNode };

@@ -1,5 +1,9 @@
 import { useRef } from "react";
-import type { TSynthOptions, TStopOptions } from "..";
+import type {
+  TSynthOptions,
+  TStopOptions,
+  TBasic,
+} from "..";
 import { useSynthSingle } from "..";
 import type { TMultiOptions } from "./types";
 
@@ -24,6 +28,7 @@ export const useSynthMulti = (
   const handlePlay = async (
     multiOptions: TMultiOptions | TMultiOptions[],
   ) => {
+    const y: TBasic[] = [];
     await context.resume();
 
     if (Array.isArray(multiOptions)) {
@@ -31,23 +36,35 @@ export const useSynthMulti = (
     } else {
       currentRef.current = [multiOptions];
     }
-    currentRef.current.forEach((value: TMultiOptions) => {
-      const { count, spread, stagger } = value;
-      [...Array(count ?? 1)].forEach(
-        (_, index, { length }) => {
-          const next = { ...synth };
-          synthsRef.current.push(next);
-          next.play({
-            ...synthOptions,
-            ...value,
-            delay: index * 0.1 * (stagger ?? 0),
-            gain: 1 / (length * 0.5),
-            detune:
-              (index - ~~(length * 0.5)) * (spread ?? 0),
-          });
-        },
-      );
-    });
+    for await (const value of currentRef.current) {
+      const {
+        count,
+        spread,
+        stagger,
+        gain = 0,
+        detune = 0,
+      } = value;
+      const arr = [...Array(count ?? 1)];
+      let index = 0;
+      const length = arr.length;
+      for await (const _ of arr) {
+        const next = { ...synth };
+        synthsRef.current.push(next);
+        const x = await next.play({
+          ...value,
+          delay: index * 0.1 * (stagger ?? 0),
+          gain: gain + 1 / length,
+          detune:
+            detune +
+            (index - ~~(length * 0.5)) * (spread ?? 0),
+        });
+        if (x) {
+          y.push(x);
+        }
+        index++;
+      }
+    }
+    return y.filter(Boolean);
   };
 
   return { play: handlePlay, stop: handleStop };
