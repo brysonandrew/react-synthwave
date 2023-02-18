@@ -22,25 +22,24 @@ export const useSynthMulti = (
   };
 
   const handlePlay = async (
-    synthOptions: TSynthOptions = {},
-    options: TMultiOptions | TMultiOptions[] = {},
+    multiOptions: TMultiOptions | TMultiOptions[],
   ) => {
     await context.resume();
 
-    if (Array.isArray(options)) {
-      currentRef.current = options;
+    if (Array.isArray(multiOptions)) {
+      currentRef.current = multiOptions;
     } else {
-      currentRef.current = [options];
+      currentRef.current = [multiOptions];
     }
     currentRef.current.forEach((value: TMultiOptions) => {
       const { count, spread, stagger } = value;
       [...Array(count ?? 1)].forEach(
-        (options, index, { length }) => {
+        (_, index, { length }) => {
           const next = { ...synth };
           synthsRef.current.push(next);
           next.play({
-            ...options,
             ...synthOptions,
+            ...value,
             delay: index * 0.1 * (stagger ?? 0),
             gain: 1 / (length * 0.5),
             detune:

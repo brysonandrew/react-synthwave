@@ -52,12 +52,11 @@ Will play multiple oscillators over the top of each other.
 - input:
   - context: AudioContext
   - synthOptions: TSynthOptions
-  - multiOptions: TMultiOptions
     - output:
       - play:
         - input:
           - synthOptions: TSynthOptions
-          - multiOptions: TMultiOptions
+          - multiOptions: TMultiOptions | TMultiOptions[]
         - output: void
       - stop:
         - input:
