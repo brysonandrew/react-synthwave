@@ -55,7 +55,6 @@ Will play multiple oscillators over the top of each other.
     - output:
       - play:
         - input:
-          - synthOptions: TSynthOptions
           - multiOptions: TMultiOptions | TMultiOptions[]
         - output: void
       - stop:
@@ -66,7 +65,7 @@ Will play multiple oscillators over the top of each other.
 ```jsx
 import { useSynthMulti } from "react-synthwave";
 
-const synth = useSynthMulti(context, options, {count: 3});
+const synth = useSynthMulti(context, options);
 
 return {
   <div>
