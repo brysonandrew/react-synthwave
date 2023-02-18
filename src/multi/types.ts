@@ -1,4 +1,4 @@
-import type { TSynthOptions } from "src/single/types";
+import type { TSynthOptions } from "..";
 
 export type TMultiOptions = TSynthOptions & {
   spread?: number;
