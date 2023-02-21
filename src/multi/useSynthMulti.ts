@@ -2,7 +2,6 @@ import { useRef } from "react";
 import type {
   TSynthOptions,
   TStopOptions,
-  TBasic,
 } from "..";
 import { useSynthSingle } from "..";
 import type { TMultiOptions } from "./types";
@@ -19,8 +18,8 @@ export const useSynthMulti = (
   >([]);
 
   const handleStop = async (options: TStopOptions = {}) => {
-    synthsRef.current.forEach((s) => {
-      s.stop(options);
+    synthsRef.current.forEach((synth) => {
+      synth.stop(options);
     });
     synthsRef.current = [];
   };
@@ -28,7 +27,6 @@ export const useSynthMulti = (
   const handlePlay = async (
     multiOptions: TMultiOptions | TMultiOptions[],
   ) => {
-    const y: TBasic[] = [];
     await context.resume();
 
     if (Array.isArray(multiOptions)) {
@@ -50,7 +48,7 @@ export const useSynthMulti = (
       for await (const _ of arr) {
         const next = { ...synth };
         synthsRef.current.push(next);
-        const x = await next.play({
+        await next.play({
           ...value,
           delay: index * 0.1 * (stagger ?? 0),
           gain: gain + 1 / length,
@@ -58,13 +56,9 @@ export const useSynthMulti = (
             detune +
             (index - ~~(length * 0.5)) * (spread ?? 0),
         });
-        if (x) {
-          y.push(x);
-        }
         index++;
       }
     }
-    return y.filter(Boolean);
   };
 
   return { play: handlePlay, stop: handleStop };

@@ -31,11 +31,9 @@ export const useSynthSingle = (
     originalOptions;
   const optionsRef = useRef<TSynthOptions>(originalOptions);
   optionsRef.current = originalOptions;
-
   const currentRef = useRef<TRef>({
     isPlaying: false,
   });
-
   const clonesRef = useRef<OscillatorNode[]>([]);
   const gainClonesRef = useRef<GainNode[]>([]);
 
@@ -91,6 +89,11 @@ export const useSynthSingle = (
   };
 
   const handleStop = (options: TStopOptions = {}) => {
+    if (
+      clonesRef.current.length === 0 &&
+      gainClonesRef.current.length === 0
+    )
+      return;
     const oscillatorNode = clonesRef.current.shift();
     const gainNode = gainClonesRef.current.shift();
 
@@ -147,6 +150,7 @@ export const useSynthSingle = (
   const handlePlay = async (
     options: TSynthOptions = {},
   ) => {
+    console.log(options);
     await context.resume();
     const gainConfig = { gain: options.gain };
 
@@ -179,6 +183,7 @@ export const useSynthSingle = (
 
     const {
       type,
+      midi,
       frequency,
       detune,
       start = context.currentTime,
@@ -228,6 +233,7 @@ export const useSynthSingle = (
     }
 
     oscillatorNode.connect(gainNode);
+
     if (typeof optionsRef.current.output === "undefined") {
       oscillatorNode.connect(context.destination);
     } else {
@@ -237,9 +243,6 @@ export const useSynthSingle = (
         oscillatorNode.connect(optionsRef.current.output);
       }
     }
-
-    return null;
-    //{ o: oscillatorNode, g: gainNode };
   };
 
   return { play: handlePlay, stop: handleStop };

@@ -1,7 +1,4 @@
-import {
-  TWritableOscillatorType,
-  WRITABLE_OSCILLATOR_TYPES,
-} from "src";
+import { WRITABLE_OSCILLATOR_TYPES } from "@react-synthwave/index";
 import type { TState } from "./types";
 
 export const _SYNTH_WAVE_STATE_STORAGE_KEY =

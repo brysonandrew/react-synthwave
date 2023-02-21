@@ -1,7 +1,6 @@
-import type { TMultiOptions } from "../../src/multi/types";
+import { TMultiOptions } from "@react-synthwave/index";
 
 export const DOUBLE: TMultiOptions[] = [
- 
   {
     type: "square",
     count: 1,
