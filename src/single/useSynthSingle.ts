@@ -11,10 +11,16 @@ type TRef = {
   oscillatorNode?: OscillatorNode;
   gainNode?: GainNode;
 };
- 
+
+type TCreateGainOptions = { gain?: number };
+
 type TCreateRef = {
-  createOscillatorNode: () => OscillatorNode;
-  createGainNode: () => GainNode;
+  createOscillatorNode: (
+    options?: Partial<TSynthOptions>,
+  ) => OscillatorNode;
+  createGainNode: (
+    options?: TCreateGainOptions,
+  ) => GainNode;
 };
 
 export const useSynthSingle = (
@@ -25,28 +31,46 @@ export const useSynthSingle = (
     originalOptions;
   const optionsRef = useRef<TSynthOptions>(originalOptions);
   optionsRef.current = originalOptions;
-
   const currentRef = useRef<TRef>({
     isPlaying: false,
   });
-
   const clonesRef = useRef<OscillatorNode[]>([]);
   const gainClonesRef = useRef<GainNode[]>([]);
 
   const createOscillatorNode = useMemo(() => {
-    const handler = () =>
-      new OscillatorNode(context, {
+    const handler = (options?: Partial<TSynthOptions>) => {
+      if (options) {
+        optionsRef.current = {
+          ...optionsRef.current,
+          ...options,
+        };
+      }
+      const { type, midi, frequency, detune } =
+        optionsRef.current;
+      return new OscillatorNode(context, {
         type,
-        frequency: resolveMidi({ midi, frequency }),
+        frequency: resolveMidi({
+          midi,
+          frequency,
+        }),
         detune,
       });
-    currentRef.current.oscillatorNode = handler();
+    };
     return handler;
   }, [type, frequency, midi, detune]);
 
   const createGainNode = useMemo(() => {
-    const handler = () => new GainNode(context, { gain });
-    currentRef.current.gainNode = handler();
+    const handler = (options?: TCreateGainOptions) => {
+      if (options) {
+        optionsRef.current = {
+          ...optionsRef.current,
+          ...options,
+        };
+      }
+      return new GainNode(context, {
+        gain: optionsRef.current.gain,
+      });
+    };
     return handler;
   }, [gain]);
 
@@ -65,20 +89,13 @@ export const useSynthSingle = (
   };
 
   const handleStop = (options: TStopOptions = {}) => {
-    const oscillatorNode = !currentRef.current.isPlaying
-      ? clonesRef.current.shift()
-      : currentRef.current.oscillatorNode;
-
-    const gainNode = !currentRef.current.isPlaying
-      ? gainClonesRef.current.shift()
-      : currentRef.current.gainNode;
-
-    if (currentRef.current.isPlaying) {
-      currentRef.current.oscillatorNode =
-        createRef.current.createOscillatorNode();
-      currentRef.current.gainNode =
-        createRef.current.createGainNode();
-    }
+    if (
+      clonesRef.current.length === 0 &&
+      gainClonesRef.current.length === 0
+    )
+      return;
+    const oscillatorNode = clonesRef.current.shift();
+    const gainNode = gainClonesRef.current.shift();
 
     currentRef.current.isPlaying = false;
 
@@ -133,33 +150,23 @@ export const useSynthSingle = (
   const handlePlay = async (
     options: TSynthOptions = {},
   ) => {
+    console.log(options);
     await context.resume();
+    const gainConfig = { gain: options.gain };
 
-    if (!currentRef.current.oscillatorNode) {
-      currentRef.current.oscillatorNode =
-        createRef.current.createOscillatorNode();
-    }
-    if (!currentRef.current.gainNode) {
-      currentRef.current.gainNode =
-        createRef.current.createGainNode();
-    }
+    const o =
+      createRef.current.createOscillatorNode(options);
+    const g = createRef.current.createGainNode(gainConfig);
+    clonesRef.current.push(o);
+    gainClonesRef.current.push(g);
 
-    if (currentRef.current.isPlaying) {
-      const o = createRef.current.createOscillatorNode();
-      const g = createRef.current.createGainNode();
-      clonesRef.current.push(o);
-      gainClonesRef.current.push(g);
-    }
+    const oscillatorNode =
+      clonesRef.current[clonesRef.current.length - 1];
 
-    const oscillatorNode = currentRef.current.isPlaying
-      ? clonesRef.current[clonesRef.current.length - 1]
-      : currentRef.current.oscillatorNode;
-
-    const gainNode = currentRef.current.isPlaying
-      ? gainClonesRef.current[
-          gainClonesRef.current.length - 1
-        ]
-      : currentRef.current.gainNode;
+    const gainNode =
+      gainClonesRef.current[
+        gainClonesRef.current.length - 1
+      ];
 
     currentRef.current.isPlaying = true;
 
@@ -176,6 +183,7 @@ export const useSynthSingle = (
 
     const {
       type,
+      midi,
       frequency,
       detune,
       start = context.currentTime,
@@ -190,7 +198,7 @@ export const useSynthSingle = (
     optionsRef.current.gain = gain;
 
     if (isWritableOscillatorType(type)) {
-      currentRef.current.oscillatorNode.type = type;
+      oscillatorNode.type = type;
     }
 
     if (
@@ -226,14 +234,14 @@ export const useSynthSingle = (
 
     oscillatorNode.connect(gainNode);
 
-    if (typeof options.output !== "undefined") {
-      if (isAudioParam(options.output)) {
-        gainNode.connect(options.output);
-      } else {
-        gainNode.connect(options.output);
-      }
+    if (typeof optionsRef.current.output === "undefined") {
+      oscillatorNode.connect(context.destination);
     } else {
-      gainNode.connect(context.destination);
+      if (isAudioParam(optionsRef.current.output)) {
+        oscillatorNode.connect(optionsRef.current.output);
+      } else {
+        oscillatorNode.connect(optionsRef.current.output);
+      }
     }
   };
 

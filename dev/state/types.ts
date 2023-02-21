@@ -1,10 +1,10 @@
+import { TSynthOptions, TMultiOptions } from "@react-synthwave/index";
 import type {
   Dispatch,
   Reducer,
   ReducerState,
   ReducerAction,
 } from "react";
-import type { TSynthOptions, TMultiOptions } from "../../src";
 
 export type TContext = TState & {
   context: AudioContext;

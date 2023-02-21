@@ -6,7 +6,6 @@ import type {
 import type { ClassValue } from "clsx";
 import clsx from "clsx";
 import { Root, Input } from "./styles";
-import { INPUT_CLASS } from "@constants/index";
 
 export type TSliderProps = Omit<
   HTMLMotionProps<"input">,
