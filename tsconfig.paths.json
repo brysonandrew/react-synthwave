@@ -6,10 +6,12 @@
       "@constants/*": ["dev/constants/*"],
       "@components/*": ["dev/components/*"],
       "@logic/*": ["dev/logic/*"],
+      "@mocks/*": ["dev/mocks/*"],
       "@state/*": ["dev/state/*"],
       "@styles/*": ["dev/styles/*"],
-      "@t/*": ["dev/t/*"],
-      "@tailwind/*": ["tailwind.*"]
+      "@t/*": ["dev/types/*"],
+      "@tailwind/*": ["tailwind.*"],
+      "@react-synthwave/*": ["src/*"]
     }
   }
 }

@@ -1,11 +1,13 @@
+import { useCallback, useRef } from "react";
 import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
-import { useCallback, useRef } from "react";
-import { useVisualize } from "../logic/visualize/useVisualize";
-import { useSynthMulti } from "../../src/multi/useSynthMulti";
 import { usePlayKey } from "@logic/key/usePlayKey";
+import { useVisualize } from "@logic/visualize/useVisualize";
 import { Options } from "./Options";
-import { useAnimation } from "framer-motion";
+import {
+  TMultiOptions,
+  useSynthMulti,
+} from "@react-synthwave/index";
 
 const Root = styled.div``;
 const Canvas = styled.canvas``;
@@ -15,14 +17,16 @@ export default () => {
   const {
     isReady,
     isPlaying,
-    context,
-    master,
     options,
     multi,
+    context,
+    master,
     dispatch,
   } = useContext();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
+  const nextOptions = { ...multi, ...options };
+  const currentRef = useRef<TMultiOptions>(nextOptions);
+  currentRef.current = nextOptions;
   useVisualize({
     isActive: isPlaying,
     context,
@@ -30,15 +34,10 @@ export default () => {
     ref: canvasRef,
   });
 
-  const { play, stop } = useSynthMulti(
-    context,
-    options,
-    multi,
-  );
-
-  const handlePlay = useCallback(() => {
+  const { play, stop } = useSynthMulti(context);
+  const handlePlay = useCallback(async () => {
     dispatch({ type: "toggle-playing", value: true });
-    play({ ...options, output: master });
+    play(currentRef.current);
   }, []);
 
   const handleStop = useCallback(() => {
@@ -56,7 +55,7 @@ export default () => {
 
   usePlayKey({
     isReady,
-    play: handlePlay,
+    play: () => handlePlay(),
     stop: handleStop,
     isActive: true,
     isPlaying,

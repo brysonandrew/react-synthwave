@@ -3,7 +3,7 @@ import { NumberSlider } from "@components/inputs/number-slider";
 import { Select } from "@components/inputs/select";
 import styled from "@emotion/styled";
 import { useContext } from "@state/Context";
-import { WRITABLE_OSCILLATOR_TYPES } from "../../src";
+import { WRITABLE_OSCILLATOR_TYPES } from "@react-synthwave/index";
 
 const Root = styled.div``;
 const List = styled.ul``;
@@ -33,7 +33,7 @@ export const Options: FC = () => {
   return (
     <Root>
       <List>
-        <Item className="p-1 border-red-600 border-2 rounded-md">
+        <Item className="p-1 border-white-600 border-2 rounded-md">
           <List>
             <Item>
               <Select
@@ -119,7 +119,7 @@ export const Options: FC = () => {
           </List>
         </Item>
         <Item className="py-1" />
-        <Item className="p-1 border-red-600 border-2 rounded-md">
+        <Item className="p-1 border-white-600 border-2 rounded-md">
           <List>
             <Item>
               <NumberSlider

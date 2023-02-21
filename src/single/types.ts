@@ -8,7 +8,12 @@ export type TSynthOptions = OscillatorOptions &
     attack?: number;
     decay?: number;
     delay?: number;
-    output?: AudioNode | GainNode | AudioParam | BiquadFilterNode | AudioWorkletNode;
+    output?:
+      | AudioNode
+      | GainNode
+      | AudioParam
+      | BiquadFilterNode
+      | AudioWorkletNode;
     onEnded?(isDone: boolean): void;
   };
 
@@ -27,3 +32,10 @@ export type TStopOptions = Pick<
   TSynthOptions,
   "gain" | "decay" | "end" | "onEnded" | "delay"
 >;
+
+export type TSingleSynth = {
+  play: (options?: TSynthOptions) => Promise<void>;
+  stop: (options?: TStopOptions) => void;
+};
+
+export type TBasic = { o: OscillatorNode; g: GainNode };

@@ -15,7 +15,8 @@
 
 Will play a single oscillator each time play is called
 
-- input: context: AudioContext,
+- input: 
+  - context: AudioContext,
   - options: TSynthOptions
     - output:
       - play:
@@ -34,10 +35,10 @@ const synth = useSynthSingle(context, options);
 
 return {
   <div>
-    <button onClick={() => synth.play({attack:0.2})}>
+    <button onClick={() => synth.play({attack: 0.2})}>
      ▷
     </button>
-    <button onClick={() => synth.stop({delay:0.2})}>
+    <button onClick={() => synth.stop({delay: 0.2})}>
       ▣
     </button>
   </div>
@@ -51,12 +52,10 @@ Will play multiple oscillators over the top of each other.
 - input:
   - context: AudioContext
   - synthOptions: TSynthOptions
-  - multiOptions: TMultiOptions
     - output:
       - play:
         - input:
-          - synthOptions: TSynthOptions
-          - multiOptions: TMultiOptions
+          - multiOptions: TMultiOptions | TMultiOptions[]
         - output: void
       - stop:
         - input:
@@ -66,14 +65,14 @@ Will play multiple oscillators over the top of each other.
 ```jsx
 import { useSynthMulti } from "react-synthwave";
 
-const synth = useSynthMulti(context, options, {count: 3});
+const synth = useSynthMulti(context, options);
 
 return {
   <div>
     <button onClick={() => synth.play({midi: 28})}>
      ▷
     </button>
-    <button onClick={() => synth.stop({end:context.currentTime + 5})}>
+    <button onClick={() => synth.stop({end: context.currentTime + 5})}>
       ▣
     </button>
   </div>
