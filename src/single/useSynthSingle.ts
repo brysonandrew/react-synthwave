@@ -150,7 +150,6 @@ export const useSynthSingle = (
   const handlePlay = async (
     options: TSynthOptions = {},
   ) => {
-    console.log(options);
     await context.resume();
     const gainConfig = { gain: options.gain };
 
