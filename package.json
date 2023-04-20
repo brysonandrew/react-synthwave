@@ -22,7 +22,12 @@
   "sideEffects": false,
   "keywords": [
     "react",
-    "sunset"
+    "synthwave",
+    "oscillators",
+    "layered synths",
+    "palms",
+    "sunset",
+    "night drive"
   ],
   "dependencies": {
     "@emotion/babel-plugin": "^11.10.5",
