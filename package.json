@@ -20,15 +20,6 @@
     "url": "git+https://github.com/brysonandrew/react-synthwave.git"
   },
   "sideEffects": false,
-  "keywords": [
-    "react",
-    "synthwave",
-    "oscillators",
-    "layered synths",
-    "palms",
-    "sunset",
-    "night drive"
-  ],
   "dependencies": {
     "@emotion/babel-plugin": "^11.10.5",
     "@emotion/react": "^11.10.0",

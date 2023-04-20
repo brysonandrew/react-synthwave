@@ -1,6 +1,6 @@
 {
   "name": "react-synthwave",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "description": "Play synth sounds using Web Audio oscillators",
   "types": "/index.d.ts",
   "main": "/index.ts",
@@ -28,7 +28,12 @@
   "sideEffects": false,
   "keywords": [
     "react",
-    "sunset"
+    "synthwave",
+    "oscillators",
+    "layered synths",
+    "palms",
+    "sunset",
+    "night drive"
   ],
   "peerDependencies": {
     "react": "^18.0.0",
